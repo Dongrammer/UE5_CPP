@@ -25,4 +25,12 @@ public:
 
 		return Cast<T>(Asset.Object);
 	}
+
+	template<typename T>
+	static TSubclassOf<T> GetClass(FString InPath)
+	{
+		ConstructorHelpers::FClassFinder<T> Asset(*InPath);
+
+		return Asset.Class;
+	}
 };
