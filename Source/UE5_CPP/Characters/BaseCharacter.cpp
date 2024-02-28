@@ -6,6 +6,7 @@
 ABaseCharacter::ABaseCharacter()
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.0f, 96.0f);
+	SetCharacterMovement();
 
 }
 
@@ -28,4 +29,6 @@ void ABaseCharacter::SetCharacterMovement()
 
 	Comp->BrakingDecelerationWalking = 2000.0f;
 	Comp->BrakingDecelerationFalling = 1500.0f;
+
+	Comp->bOrientRotationToMovement = true;
 }

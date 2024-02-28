@@ -9,6 +9,7 @@
 AHero::AHero()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bUseControllerRotationYaw = false;
 
 	CreateCamera();
 	
@@ -16,7 +17,7 @@ AHero::AHero()
 	GetMesh()->SetRelativeLocation(FVector(0, 0, -90));
 	GetMesh()->SetRelativeRotation(FRotator(0, -90, 0));
 
-	bUseControllerRotationYaw = false;
+	GetMesh()->SetAnimInstanceClass(Helper::GetClass<UAnimInstance>(L"/Game/Animation/ABP_Default"));
 }
 
 void AHero::BeginPlay()
