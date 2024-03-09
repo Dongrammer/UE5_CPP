@@ -2,16 +2,12 @@
 
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Helper.h"
-
-#include "Components/WeaponComponent.h"
 
 ABaseCharacter::ABaseCharacter()
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.0f, 96.0f);
-
-	WeaponComponent = Helper::CreateActorComponent<UWeaponComponent>(this, "Weapon Component");
 	SetCharacterMovement();
+
 }
 
 void ABaseCharacter::BeginPlay()

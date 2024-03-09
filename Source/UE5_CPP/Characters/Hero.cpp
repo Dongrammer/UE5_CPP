@@ -91,6 +91,6 @@ void AHero::CreateCamera()
 	CameraArm->TargetArmLength = 400.0f;
 	CameraArm->bUsePawnControlRotation = true;
 
-	Camera = Helper::CreateSceneComponent<UCameraComponent>(this, "Camera", CameraArm);
+	Camera = Helper::CreateComponent<UCameraComponent>(this, "Camera", CameraArm);
 	Camera->bUsePawnControlRotation = false;
 }
