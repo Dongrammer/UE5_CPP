@@ -6,7 +6,7 @@ class UE5_CPP_API Helper
 {
 public:
 	template<typename T>
-	static T* CreateComponent(AActor* InOwner, FName InComponentName, USceneComponent* InParent = nullptr, FName InSocketName = NAME_None)
+	static T* CreateSceneComponent(AActor* InOwner, FName InComponentName, USceneComponent* InParent = nullptr, FName InSocketName = NAME_None)
 	{
 		T* Component = InOwner->CreateDefaultSubobject<T>(InComponentName);
 
@@ -16,6 +16,12 @@ public:
 			InOwner->SetRootComponent(Component);
 
 		return Component;
+	}
+
+	template<typename T>
+	static T* CreateActorComponent(AActor* Owner, FName ComponentName)
+	{
+		return Owner->CreateDefaultSubobject<T>(ComponentName);
 	}
 
 	template<typename T>
