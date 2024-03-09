@@ -4,7 +4,7 @@ ABaseWeapon::ABaseWeapon()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	Body = Helper::CreateComponent<USkeletalMeshComponent>(this, "Body");
+	Body = Helper::CreateSceneComponent<USkeletalMeshComponent>(this, "Body");
 }
 
 void ABaseWeapon::BeginPlay()
