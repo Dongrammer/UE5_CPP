@@ -40,3 +40,17 @@ public:
 		return Asset.Class;
 	}
 };
+
+#define MAPPING_CLICK(EnhancedInputComponent, InputAction, StartedAction, CompletedAction) \
+	if (InputAction) \
+	{ \
+	EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Started, this, &StartedAction); \
+	EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &CompletedAction); \
+	}
+
+#define MAPPING_TRIGGERED(EnhancedInputComponent, InputAction, Action) \
+	if (InputAction) \
+		EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &Action);
+
+#define MULTICAST_DELEGATE_BROADCAST(Delegate) \
+	if (Delegate.IsBound()) Delegate.Broadcast()

@@ -17,6 +17,7 @@ class UE5_CPP_API UWeaponComponent : public UActorComponent
 	GENERATED_BODY()
 
 private:
+	/* ABP Read Value */
 	bool Swapping = false;
 	EWeaponType CurrentWeaponType;
 
@@ -42,11 +43,32 @@ public:
 	FORCEINLINE EWeaponSlot GetSelectedWeaponSlot() { return SelectedWeaponSlot; }
 	FORCEINLINE EWeaponType GetCurrentWeaponType() { return CurrentWeaponType; }
 	FORCEINLINE bool IsSwapping() { return Swapping; }
-	FORCEINLINE UWeaponDataAsset* GetWeaponAsset(const EWeaponSlot Key) { return WeaponAssets.FindRef(Key); }
+	FORCEINLINE UWeaponDataAsset* GetAsset(const EWeaponSlot Key) { return WeaponAssets.FindRef(Key); }
 	FORCEINLINE ABaseWeapon* GetWeapon(const EWeaponSlot Key) { return Weapons.FindRef(Key); }
 		
 private:
 	void SpawnWeapons();
+
+	UFUNCTION()
+	void DoMainAction();
+
+	UFUNCTION()
+	void EndMainAction();
+
+	UFUNCTION()
+	void DoSubAction();
+
+	UFUNCTION()
+	void EndSubAction();
+
+	UFUNCTION()
+	void DoAvoidAction();
+
+	UFUNCTION()
+	void EndAvoidAction();
+
+	UFUNCTION()
+	void DoReloadAction();
 
 public:
 	void EquipWeapon(EWeaponSlot Slot);

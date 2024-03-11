@@ -2,6 +2,8 @@
 #include "Weapons/WeaponEnum.h"
 #include "Weapons/BaseWeapon.h"
 #include "Characters/BaseCharacter.h"
+#include "Weapons/WeaponDataAsset.h"
+#include "Characters/Hero.h"
 
 UWeaponComponent::UWeaponComponent()
 {
@@ -15,6 +17,22 @@ void UWeaponComponent::BeginPlay()
 	Owner = Cast<ABaseCharacter>(GetOwner());
 
 	SpawnWeapons();
+	SelectedWeaponSlot = EWeaponSlot::E_Main;
+	CurrentWeaponType = GetAsset(SelectedWeaponSlot)->WeaponType;
+
+	if (AHero* Hero = Cast<AHero>(Owner))
+	{
+		Hero->DDoMainAction.AddUFunction(this, "DoMainAction");
+		Hero->DEndMainAction.AddUFunction(this, "EndMainAction");
+
+		Hero->DDoSubAction.AddUFunction(this, "DoSubAction");
+		Hero->DEndSubAction.AddUFunction(this, "EndSubAction");
+
+		Hero->DDoAvoidAction.AddUFunction(this, "DoAvoidAction");
+		Hero->DEndAvoidAction.AddUFunction(this, "EndAvoidAction");
+
+		Hero->DDoReloadAction.AddUFunction(this, "DoReloadAction");
+	}
 }
 
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -24,29 +42,87 @@ void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UWeaponComponent::SpawnWeapons()
 {
-	/*for (auto& Weapon : WeaponAssets)
+	for (auto& Weapon : WeaponAssets)
 	{
 		if (!Weapon.Value) return;
 
 		FActorSpawnParameters SpawnParameter;
 		SpawnParameter.Owner = GetOwner();
 
-		ABaseWeapon* Temp = Cast<ABaseWeapon>(GetOwner()->GetWorld()->SpawnActor<AActor>(Weapon.Value, FVector(), FRotator(), SpawnParameter));
+		ABaseWeapon* Temp = Cast<ABaseWeapon>(GetOwner()->GetWorld()->SpawnActor<AActor>(Weapon.Value->WeaponClass, FVector(), FRotator(), SpawnParameter));
 
 		if (Temp)
 		{
 			Weapons.Add(Weapon.Key, Temp);
-			Temp->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "Rifle_Holder");
+			AttachWeapon(Weapon.Key, EAttachType::E_Handle);
 		}
-	}*/
+	}
+}
+
+void UWeaponComponent::DoMainAction()
+{
+}
+
+void UWeaponComponent::EndMainAction()
+{
+}
+
+void UWeaponComponent::DoSubAction()
+{
+}
+
+void UWeaponComponent::EndSubAction()
+{
+}
+
+void UWeaponComponent::DoAvoidAction()
+{
+}
+
+void UWeaponComponent::EndAvoidAction()
+{
+}
+
+void UWeaponComponent::DoReloadAction()
+{
 }
 
 void UWeaponComponent::EquipWeapon(EWeaponSlot Slot)
 {
+	if (Slot == SelectedWeaponSlot) return;
+
+	// 1. 애니메이션 재생을 위한 값 변경
+	Swapping = true;
+
+	// 2. ABP에 넘겨주는 무기 타입 값 수정
+	CurrentWeaponType = GetAsset(Slot)->WeaponType;
 }
 
 void UWeaponComponent::AttachWeapon(EWeaponSlot Slot, EAttachType AttachType)
 {
-	
+	ABaseWeapon* Weapon = GetWeapon(Slot);
+
+	UWeaponDataAsset* Asset = GetAsset(Slot);
+	FName SocketName;
+
+	switch (AttachType)
+	{
+	case EAttachType::E_Holder:
+		SocketName = Asset->HolderSocketName;
+		break;
+		
+	case EAttachType::E_Handle:
+		SocketName = Asset->HandleSocketName;
+		break;
+
+	default: break;
+	}
+
+	Weapon->AttachToComponent
+	(
+		Owner->GetMesh(),
+		FAttachmentTransformRules::KeepRelativeTransform,
+		SocketName
+	);
 }
 

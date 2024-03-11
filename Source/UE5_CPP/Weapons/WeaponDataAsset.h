@@ -4,7 +4,7 @@
 #include "Engine/DataAsset.h"
 #include "WeaponDataAsset.generated.h"
 
-enum class EWeaponType;
+enum class EWeaponType : uint8;
 class ABaseWeapon;
 
 UCLASS()

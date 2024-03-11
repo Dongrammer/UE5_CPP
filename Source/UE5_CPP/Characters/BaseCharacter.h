@@ -18,6 +18,8 @@ protected:
 public:
 	ABaseCharacter();
 
+	FORCEINLINE UWeaponComponent* GetWeaponComponent() { return WeaponComponent; }
+
 protected:
 	virtual void BeginPlay() override;
 
