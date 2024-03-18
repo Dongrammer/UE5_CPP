@@ -55,6 +55,9 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = "WeaponComponent", meta = (AllowPrivateAccess = "true"))
 	bool Swapping;
 
+	UPROPERTY(BlueprintReadOnly, Category = "WeaponComponent", meta = (AllowPrivateAccess = "true"))
+	bool Aiming;
+
 private:
 	ABaseCharacter* Owner;
 

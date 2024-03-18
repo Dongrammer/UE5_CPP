@@ -68,37 +68,37 @@ void UWeaponComponent::SpawnWeapons()
 
 void UWeaponComponent::DoMainAction()
 {
-	CurrentWeapon->GetAction(EActionType::MainAction)->DoAction();
+	CALL_ACTION(EActionType::MainAction, EActionTiming::Do);
 }
 
 void UWeaponComponent::EndMainAction()
 {
-	CurrentWeapon->GetAction(EActionType::MainAction)->EndAction();
+	CALL_ACTION(EActionType::MainAction, EActionTiming::End);
 }
 
 void UWeaponComponent::DoSubAction()
 {
-	CurrentWeapon->GetAction(EActionType::SubAction)->DoAction();
+	CALL_ACTION(EActionType::SubAction, EActionTiming::Do);
 }
 
 void UWeaponComponent::EndSubAction()
 {
-	CurrentWeapon->GetAction(EActionType::SubAction)->EndAction();
+	CALL_ACTION(EActionType::SubAction, EActionTiming::End);
 }
 
 void UWeaponComponent::DoAvoidAction()
 {
-	CurrentWeapon->GetAction(EActionType::AvoidAction)->DoAction();
+	CALL_ACTION(EActionType::AvoidAction, EActionTiming::Do);
 }
 
 void UWeaponComponent::EndAvoidAction()
 {
-	CurrentWeapon->GetAction(EActionType::AvoidAction)->EndAction();
+	CALL_ACTION(EActionType::AvoidAction, EActionTiming::End);
 }
 
 void UWeaponComponent::DoReloadAction()
 {
-	CurrentWeapon->GetAction(EActionType::ReloadAction)->DoAction();
+	CALL_ACTION(EActionType::ReloadAction, EActionTiming::Do);
 }
 
 void UWeaponComponent::EquipWeapon(EWeaponSlot Slot)
@@ -106,7 +106,7 @@ void UWeaponComponent::EquipWeapon(EWeaponSlot Slot)
 	if (Slot == SelectedWeaponSlot) return;
 
 	// 1. 애니메이션 재생을 위한 값 변경
-	Swapping = true;
+	bSwapping = true;
 
 	// 2. ABP에 넘겨주는 무기 타입 값 수정
 	CurrentWeaponType = GetAsset(Slot)->WeaponType;

@@ -12,3 +12,11 @@ enum class EActionType : uint8
 	ReloadAction UMETA(DisplayName = "Reload Action"),
 	Max UMETA(Hidden)
 };
+
+UENUM(Blueprintable)
+enum class EActionTiming : uint8
+{
+	Do,
+	Tick,
+	End
+};

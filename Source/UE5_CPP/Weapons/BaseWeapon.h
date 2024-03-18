@@ -23,7 +23,7 @@ public:
 
 	void CreateAction(EActionType Type, TSubclassOf<UBaseAction> ActionClass);
 
-	FORCEINLINE UBaseAction* GetAction(EActionType Type) { return ActionsPtr[Type]; }
+	FORCEINLINE UBaseAction* GetAction(EActionType Type) { return ActionsPtr.FindRef(Type); }
 
 protected:
 	virtual void BeginPlay() override;

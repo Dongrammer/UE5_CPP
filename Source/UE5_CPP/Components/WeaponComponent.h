@@ -18,7 +18,8 @@ class UE5_CPP_API UWeaponComponent : public UActorComponent
 
 private:
 	/* ABP Read Value */
-	bool Swapping = false;
+	bool bSwapping = false;
+	bool bAiming = false;
 	EWeaponType CurrentWeaponType;
 
 protected:
@@ -43,7 +44,8 @@ public:
 public:
 	FORCEINLINE EWeaponSlot GetSelectedWeaponSlot() { return SelectedWeaponSlot; }
 	FORCEINLINE EWeaponType GetCurrentWeaponType() { return CurrentWeaponType; }
-	FORCEINLINE bool IsSwapping() { return Swapping; }
+	FORCEINLINE bool IsSwapping() { return bSwapping; }
+	FORCEINLINE bool IsAiming() { return bAiming; }
 	FORCEINLINE UWeaponDataAsset* GetAsset(const EWeaponSlot Key) { return WeaponAssets.FindRef(Key); }
 	FORCEINLINE ABaseWeapon* GetWeapon(const EWeaponSlot Key) { return Weapons.FindRef(Key); }
 		
@@ -74,4 +76,10 @@ private:
 public:
 	void EquipWeapon(EWeaponSlot Slot);
 	void AttachWeapon(EWeaponSlot Slot, EAttachType AttachType);
+
+	FORCEINLINE void SetAiming(bool AimState) { bAiming = AimState; }
 };
+
+#define CALL_ACTION(ActionType, ActionTiming) \
+	if(UBaseAction* Action = CurrentWeapon->GetAction(ActionType)) \
+		Action->ExecuteAction(ActionTiming)

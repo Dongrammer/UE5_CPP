@@ -14,6 +14,8 @@ ABaseWeapon::ABaseWeapon()
 
 void ABaseWeapon::CreateAction(EActionType Type, TSubclassOf<UBaseAction> ActionClass)
 {
+	if (ActionClass == nullptr) return;
+
 	UBaseAction* Action = NewObject<UBaseAction>(this, ActionClass);
 	ActionsPtr.Add(Type, Action);
 	Action->SetOwner(Cast<ABaseCharacter>(GetOwner()));

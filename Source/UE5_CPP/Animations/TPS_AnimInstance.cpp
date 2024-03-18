@@ -58,5 +58,6 @@ void UTPS_AnimInstance::UpdateWeaponComponentVariable()
 {
 	if (!WeaponComponent) return;
 	Swapping = WeaponComponent->IsSwapping();
+	Aiming = WeaponComponent->IsAiming();
 	WeaponType = WeaponComponent->GetCurrentWeaponType();
 }
