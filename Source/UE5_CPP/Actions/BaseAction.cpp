@@ -3,12 +3,19 @@
 #include "Characters/BaseCharacter.h"
 #include "Weapons/BaseWeapon.h"
 
-void BaseAction::SetOwner(ABaseCharacter* InOwner)
+void UBaseAction::SetOwner(ABaseCharacter* InOwner)
 {
 	Owner = InOwner;
-
 }
 
-void BaseAction::DoAction()
+void UBaseAction::DoAction()
+{
+}
+
+void UBaseAction::TickAction()
+{
+}
+
+void UBaseAction::EndAction()
 {
 }

@@ -4,6 +4,8 @@
 #include "Characters/BaseCharacter.h"
 #include "Weapons/WeaponDataAsset.h"
 #include "Characters/Hero.h"
+#include "Actions/BaseAction.h"
+#include "Actions/ActionEnum.h"
 
 UWeaponComponent::UWeaponComponent()
 {
@@ -53,38 +55,50 @@ void UWeaponComponent::SpawnWeapons()
 
 		if (Temp)
 		{
+			for (auto& Action : Weapon.Value->Actions)
+				Temp->CreateAction(Action.Key, Action.Value);
+
 			Weapons.Add(Weapon.Key, Temp);
 			AttachWeapon(Weapon.Key, EAttachType::E_Handle);
 		}
 	}
+
+	CurrentWeapon = GetWeapon(EWeaponSlot::E_Main);
 }
 
 void UWeaponComponent::DoMainAction()
 {
+	CurrentWeapon->GetAction(EActionType::MainAction)->DoAction();
 }
 
 void UWeaponComponent::EndMainAction()
 {
+	CurrentWeapon->GetAction(EActionType::MainAction)->EndAction();
 }
 
 void UWeaponComponent::DoSubAction()
 {
+	CurrentWeapon->GetAction(EActionType::SubAction)->DoAction();
 }
 
 void UWeaponComponent::EndSubAction()
 {
+	CurrentWeapon->GetAction(EActionType::SubAction)->EndAction();
 }
 
 void UWeaponComponent::DoAvoidAction()
 {
+	CurrentWeapon->GetAction(EActionType::AvoidAction)->DoAction();
 }
 
 void UWeaponComponent::EndAvoidAction()
 {
+	CurrentWeapon->GetAction(EActionType::AvoidAction)->EndAction();
 }
 
 void UWeaponComponent::DoReloadAction()
 {
+	CurrentWeapon->GetAction(EActionType::ReloadAction)->DoAction();
 }
 
 void UWeaponComponent::EquipWeapon(EWeaponSlot Slot)
@@ -96,6 +110,9 @@ void UWeaponComponent::EquipWeapon(EWeaponSlot Slot)
 
 	// 2. ABP에 넘겨주는 무기 타입 값 수정
 	CurrentWeaponType = GetAsset(Slot)->WeaponType;
+	
+	// 현재 무기
+	CurrentWeapon = GetWeapon(Slot);
 }
 
 void UWeaponComponent::AttachWeapon(EWeaponSlot Slot, EAttachType AttachType)

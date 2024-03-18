@@ -5,7 +5,9 @@
 #include "WeaponDataAsset.generated.h"
 
 enum class EWeaponType : uint8;
+enum class EActionType : uint8;
 class ABaseWeapon;
+class UBaseAction;
 
 UCLASS()
 class UE5_CPP_API UWeaponDataAsset : public UDataAsset
@@ -44,4 +46,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Property")
 	float Weight;				// ¹«°Ô
+
+	/* =============================================================== */
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Actions")
+	TMap<EActionType, TSubclassOf<UBaseAction>> Actions;
 };

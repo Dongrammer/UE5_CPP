@@ -28,6 +28,7 @@ protected:
 private:
 	TMap<EWeaponSlot, ABaseWeapon*> Weapons;
 	ABaseCharacter* Owner;
+	ABaseWeapon* CurrentWeapon;
 	EWeaponSlot SelectedWeaponSlot;
 
 public:	
