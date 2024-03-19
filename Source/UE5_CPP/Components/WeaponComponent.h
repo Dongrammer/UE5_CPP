@@ -16,7 +16,7 @@ class UE5_CPP_API UWeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-private:
+public:
 	/* ABP Read Value */
 	bool bSwapping = false;
 	bool bAiming = false;
@@ -29,7 +29,10 @@ protected:
 private:
 	TMap<EWeaponSlot, ABaseWeapon*> Weapons;
 	ABaseCharacter* Owner;
+
+	UPROPERTY()
 	ABaseWeapon* CurrentWeapon;
+
 	EWeaponSlot SelectedWeaponSlot;
 
 public:	

@@ -19,11 +19,14 @@ void UBaseAction::ExecuteAction(const EActionTiming Timing)
 		TickAction(); break;
 	case EActionTiming::End :
 		EndAction(); break;
+	default:
+		break;
 	}
 }
 
 void UBaseAction::DoAction()
 {
+	bIsClick = true;
 }
 
 void UBaseAction::TickAction()
@@ -32,4 +35,5 @@ void UBaseAction::TickAction()
 
 void UBaseAction::EndAction()
 {
+	bIsClick = false;
 }

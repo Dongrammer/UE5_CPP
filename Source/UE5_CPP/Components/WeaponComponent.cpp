@@ -40,6 +40,9 @@ void UWeaponComponent::BeginPlay()
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	CALL_ACTION(EActionType::MainAction, EActionTiming::Tick);
+	CALL_ACTION(EActionType::SubAction, EActionTiming::Tick);
 }
 
 void UWeaponComponent::SpawnWeapons()
@@ -59,11 +62,12 @@ void UWeaponComponent::SpawnWeapons()
 				Temp->CreateAction(Action.Key, Action.Value);
 
 			Weapons.Add(Weapon.Key, Temp);
-			AttachWeapon(Weapon.Key, EAttachType::E_Handle);
+			AttachWeapon(Weapon.Key, EAttachType::E_Holder);
 		}
 	}
 
-	CurrentWeapon = GetWeapon(EWeaponSlot::E_Main);
+	EquipWeapon(EWeaponSlot::E_Main);
+	AttachWeapon(EWeaponSlot::E_Main, EAttachType::E_Handle);
 }
 
 void UWeaponComponent::DoMainAction()
@@ -110,16 +114,22 @@ void UWeaponComponent::EquipWeapon(EWeaponSlot Slot)
 
 	// 2. ABP에 넘겨주는 무기 타입 값 수정
 	CurrentWeaponType = GetAsset(Slot)->WeaponType;
+
+	// 3. 현재 무기 홀더에 장착
+	AttachWeapon(SelectedWeaponSlot, EAttachType::E_Holder);
 	
 	// 현재 무기
 	CurrentWeapon = GetWeapon(Slot);
+	SelectedWeaponSlot = Slot;
 }
 
 void UWeaponComponent::AttachWeapon(EWeaponSlot Slot, EAttachType AttachType)
 {
 	ABaseWeapon* Weapon = GetWeapon(Slot);
-
 	UWeaponDataAsset* Asset = GetAsset(Slot);
+
+	if (!Asset) return;
+	
 	FName SocketName;
 
 	switch (AttachType)

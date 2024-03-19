@@ -27,4 +27,6 @@ protected:
 
 protected:
 	ABaseCharacter* Owner;
+
+	bool bIsClick = false;
 };
