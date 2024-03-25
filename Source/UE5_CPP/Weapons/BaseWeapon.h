@@ -16,6 +16,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* Body;
 
+	UPROPERTY()
 	TMap<EActionType, UBaseAction*> ActionsPtr;
 
 public:	

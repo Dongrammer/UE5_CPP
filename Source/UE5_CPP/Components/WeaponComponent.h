@@ -33,7 +33,7 @@ private:
 	UPROPERTY()
 	ABaseWeapon* CurrentWeapon;
 
-	EWeaponSlot SelectedWeaponSlot;
+	EWeaponSlot CurrentWeaponSlot;
 
 public:	
 	UWeaponComponent();
@@ -45,7 +45,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
-	FORCEINLINE EWeaponSlot GetSelectedWeaponSlot() { return SelectedWeaponSlot; }
+	FORCEINLINE EWeaponSlot GetCurrentWeaponSlot() { return CurrentWeaponSlot; }
 	FORCEINLINE EWeaponType GetCurrentWeaponType() { return CurrentWeaponType; }
 	FORCEINLINE bool IsSwapping() { return bSwapping; }
 	FORCEINLINE bool IsAiming() { return bAiming; }
@@ -75,6 +75,19 @@ private:
 
 	UFUNCTION()
 	void DoReloadAction();
+
+	/* ========== Select Weapon ========== */
+	UFUNCTION()
+	void SelectMainWeapon();
+
+	UFUNCTION()
+	void SelectSecondaryWeapon();
+
+	UFUNCTION()
+	void SelectThrowableWeapon();
+
+	UFUNCTION()
+	void ChooseWeaponByScroll(uint8 InValue);
 
 public:
 	void EquipWeapon(EWeaponSlot Slot);

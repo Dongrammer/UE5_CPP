@@ -7,6 +7,6 @@ void UAN_EndSwapping::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase
 {
 	Super::Notify(MeshComp, Animation, EventReference);
 
-	ABaseCharacter* Owner = Cast<ABaseCharacter>(MeshComp->GetOwner());
+	if (ABaseCharacter* Owner = Cast<ABaseCharacter>(MeshComp->GetOwner()))
 	Owner->GetWeaponComponent()->bSwapping = false;
 }

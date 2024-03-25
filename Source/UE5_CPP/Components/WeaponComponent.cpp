@@ -19,8 +19,8 @@ void UWeaponComponent::BeginPlay()
 	Owner = Cast<ABaseCharacter>(GetOwner());
 
 	SpawnWeapons();
-	SelectedWeaponSlot = EWeaponSlot::E_Main;
-	CurrentWeaponType = GetAsset(SelectedWeaponSlot)->WeaponType;
+	CurrentWeaponSlot = EWeaponSlot::E_Main;
+	CurrentWeaponType = GetAsset(CurrentWeaponSlot)->WeaponType;
 
 	if (AHero* Hero = Cast<AHero>(Owner))
 	{
@@ -34,6 +34,11 @@ void UWeaponComponent::BeginPlay()
 		Hero->DEndAvoidAction.AddUFunction(this, "EndAvoidAction");
 
 		Hero->DDoReloadAction.AddUFunction(this, "DoReloadAction");
+
+		// Select Weapon Delegate
+		Hero->DMainWeaponSelect.AddUFunction(this, "SelectMainWeapon");
+		Hero->DSecondaryWeaponSelect.AddUFunction(this, "SelectSecondaryWeapon");
+		Hero->DScrollSelect.AddUFunction(this, "ChooseWeaponByScroll");
 	}
 }
 
@@ -66,7 +71,8 @@ void UWeaponComponent::SpawnWeapons()
 		}
 	}
 
-	EquipWeapon(EWeaponSlot::E_Main);
+	// 임시로 손에 들고 있게 하기 위해서 작성
+	CurrentWeapon = GetWeapon(EWeaponSlot::E_Main);
 	AttachWeapon(EWeaponSlot::E_Main, EAttachType::E_Handle);
 }
 
@@ -105,22 +111,38 @@ void UWeaponComponent::DoReloadAction()
 	CALL_ACTION(EActionType::ReloadAction, EActionTiming::Do);
 }
 
+void UWeaponComponent::SelectMainWeapon()
+{
+	EquipWeapon(EWeaponSlot::E_Main);
+}
+
+void UWeaponComponent::SelectSecondaryWeapon()
+{
+	EquipWeapon(EWeaponSlot::E_Second);
+}
+
+void UWeaponComponent::SelectThrowableWeapon()
+{
+	EquipWeapon(EWeaponSlot::E_Throwable);
+}
+
+void UWeaponComponent::ChooseWeaponByScroll(uint8 InValue)
+{
+}
+
 void UWeaponComponent::EquipWeapon(EWeaponSlot Slot)
 {
-	if (Slot == SelectedWeaponSlot) return;
+	if (Slot == CurrentWeaponSlot || bSwapping == true) return;
 
-	// 1. 애니메이션 재생을 위한 값 변경
+	// ABP 값 변경
 	bSwapping = true;
-
-	// 2. ABP에 넘겨주는 무기 타입 값 수정
 	CurrentWeaponType = GetAsset(Slot)->WeaponType;
 
-	// 3. 현재 무기 홀더에 장착
-	AttachWeapon(SelectedWeaponSlot, EAttachType::E_Holder);
-	
-	// 현재 무기
+	// 무기 부착
+	AttachWeapon(CurrentWeaponSlot, EAttachType::E_Holder);
 	CurrentWeapon = GetWeapon(Slot);
-	SelectedWeaponSlot = Slot;
+	CurrentWeaponSlot = Slot;
+	AttachWeapon(CurrentWeaponSlot, EAttachType::E_Handle);
 }
 
 void UWeaponComponent::AttachWeapon(EWeaponSlot Slot, EAttachType AttachType)
