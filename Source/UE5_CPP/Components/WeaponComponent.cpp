@@ -66,6 +66,7 @@ void UWeaponComponent::SpawnWeapons()
 			for (auto& Action : Weapon.Value->Actions)
 				Temp->CreateAction(Action.Key, Action.Value);
 
+			Temp->SetData(Weapon.Value);
 			Weapons.Add(Weapon.Key, Temp);
 			AttachWeapon(Weapon.Key, EAttachType::E_Holder);
 		}

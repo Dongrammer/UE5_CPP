@@ -8,6 +8,8 @@ enum class EWeaponType : uint8;
 enum class EActionType : uint8;
 class ABaseWeapon;
 class UBaseAction;
+class UNiagaraSystem;
+class USoundCue;
 
 UCLASS()
 class UE5_CPP_API UWeaponDataAsset : public UDataAsset
@@ -39,9 +41,6 @@ public:
 	FVector2D Rebound;			// 반동
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Property")
-	int MaxAmmoInMagazine;	// 최대 총알 장전 수
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Property")
 	int MaxAmmoCapacity;		// 최대 총알 보유 수
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Property")
@@ -49,6 +48,22 @@ public:
 
 	/* =============================================================== */
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Magazine")
+	int MaxAmmoInMagazine;	// 최대 총알 장전 수
+
+	UPROPERTY(EditDefaultsOnly, Category = "Magazine")
+	UStaticMesh* Round;		// 탄약
+
+	UPROPERTY(EditDefaultsOnly, Category = "Magazine")
+	UStaticMesh* Shell;		// 탄피
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Magazine")
+	USoundCue* FireSound;	// 발사 소리
+
+	UPROPERTY(EditDefaultsOnly, Category = "Magazine")
+	UNiagaraSystem* FireEffect;	// 발사 이펙트
+
+	/* =============================================================== */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Actions")
 	TMap<EActionType, TSubclassOf<UBaseAction>> Actions;
 };

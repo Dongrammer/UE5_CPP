@@ -33,3 +33,15 @@ void ABaseWeapon::Tick(float DeltaTime)
 
 }
 
+void ABaseWeapon::SetData(UWeaponDataAsset* Data)
+{
+}
+
+void ABaseWeapon::Fire()
+{
+}
+
+void ABaseWeapon::HoldFire()
+{
+}
+

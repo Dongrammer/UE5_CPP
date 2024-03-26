@@ -6,6 +6,7 @@
 
 enum class EActionType : uint8;
 class UBaseAction;
+class UWeaponDataAsset;
 
 UCLASS()
 class UE5_CPP_API ABaseWeapon : public AActor
@@ -31,4 +32,9 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void SetData(UWeaponDataAsset* Data);
+
+	virtual void Fire();
+	virtual void HoldFire();
 };

@@ -47,6 +47,7 @@ public:
 public:
 	FORCEINLINE EWeaponSlot GetCurrentWeaponSlot() { return CurrentWeaponSlot; }
 	FORCEINLINE EWeaponType GetCurrentWeaponType() { return CurrentWeaponType; }
+	FORCEINLINE ABaseWeapon* GetCurrentWeapon() { return CurrentWeapon; }
 	FORCEINLINE bool IsSwapping() { return bSwapping; }
 	FORCEINLINE bool IsAiming() { return bAiming; }
 	FORCEINLINE UWeaponDataAsset* GetAsset(const EWeaponSlot Key) { return WeaponAssets.FindRef(Key); }

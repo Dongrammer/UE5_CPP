@@ -11,4 +11,5 @@ class UE5_CPP_API UAct_Fire : public UBaseAction
 	
 public:
 	virtual void DoAction() override;
+	virtual void EndAction() override;
 };
