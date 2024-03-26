@@ -6,6 +6,7 @@
 #include "Sound/SoundCue.h"
 #include "Engine/StaticMeshActor.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Weapons/WeaponEnum.h"
 
 AAssaultRifle::AAssaultRifle()
 {
@@ -33,35 +34,68 @@ void AAssaultRifle::SetData(UWeaponDataAsset* Data)
 	FireSound = Data->FireSound;
 	FireEffect = Data->FireEffect;
 
-	// 타이머 설정
-	GetWorldTimerManager().SetTimer(FireProceduresHandle, this, &AAssaultRifle::FireProcedures, RPM, true);
-
-	// 설정 후 정지
-	GetWorldTimerManager().PauseTimer(FireProceduresHandle);
+	CurrentRound = MaxRound = Data->MaxAmmoInMagazine;
 }
 
 void AAssaultRifle::Fire()
 {
 	Super::Fire();
 
-	GetWorldTimerManager().UnPauseTimer(FireProceduresHandle);
+	if (CurrentRound <= 0)
+		WeaponState = EWeaponState::FireEmpty;
+	else if (CurrentRound <= MaxRound)
+		WeaponState = EWeaponState::Fire;
 }
 
 void AAssaultRifle::HoldFire()
 {
 	Super::HoldFire();
 
-	GetWorldTimerManager().PauseTimer(FireProceduresHandle);
+	FireCounter = 0;
+
+	if (CurrentRound <= 0)
+		WeaponState = EWeaponState::FireEmpty;
+	else
+		WeaponState = EWeaponState::Idle;
 }
 
-void AAssaultRifle::FireProcedures()
+void AAssaultRifle::Reload()
 {
+	Super::Reload();
+}
+
+void AAssaultRifle::BulletFire()
+{
+	Super::BulletFire();
+
+	if (CurrentRound <= 0)
+	{
+		WeaponState = EWeaponState::FireEmpty;
+		return;
+	}
+
+	// 총알이 남아 있어서 격발이 된 상태
+	FireCounter++;
+	CurrentRound--;
+
 	// 1. 사운드 재생
 	FVector Location = MuzzleFlash->GetComponentLocation();	// 소리가 재생될 컴포넌트
 	UGameplayStatics::PlaySoundAtLocation(this, FireSound, Location, FRotator());
 
-	// 2. 탄피 배출
-	Location = Body->GetSocketLocation("ShellEject");	// 탄피가 생성될 소켓 이름
+	// 2. 이펙트
+	Location = MuzzleFlash->GetComponentLocation();
+	FRotator Rotation = MuzzleFlash->GetComponentRotation();
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FireEffect, Location, Rotation);
+
+	// 3. 총알 발사
+
+}
+
+void AAssaultRifle::EjectShell()
+{
+	Super::EjectShell();
+
+	FVector Location = Body->GetSocketLocation("ShellEject");	// 탄피가 생성될 소켓 이름
 	FRotator Rotation = FRotator();
 	Rotation.Yaw = FMath::FRandRange(60.0f, 130.0f);
 
@@ -81,12 +115,19 @@ void AAssaultRifle::FireProcedures()
 	FVector Force = Body->GetRightVector();
 	Force *= FMath::FRandRange(300.0f, 500.0f);
 	TShell->GetStaticMeshComponent()->AddForce(Force);
+}
 
-	// 3. 이펙트
-	Location = MuzzleFlash->GetComponentLocation();
-	Rotation = MuzzleFlash->GetComponentRotation();
-	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FireEffect, Location, Rotation);
+void AAssaultRifle::DryFire()
+{
+	Super::DryFire();
 
-	// 4. 총알
+	FireCounter = 0;
 
+	const FVector Location = Body->GetSocketLocation("ShellEject");
+	UGameplayStatics::PlaySoundAtLocation(this, DrySound, Location, FRotator());
+}
+
+void AAssaultRifle::CheckFire()
+{
+	Super::CheckFire();
 }

@@ -29,3 +29,13 @@ enum class EAttachType : uint8
 	E_Handle UMETA(DisplayName = "Handle"),
 	E_Max
 };
+
+UENUM(BlueprintType)
+enum class EWeaponState : uint8
+{
+	Idle,
+	Fire,
+	FireEmpty,
+	Reload,
+	Loaded
+};

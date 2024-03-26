@@ -4,12 +4,15 @@
 #include "Actions/ActionEnum.h"
 #include "Actions/BaseAction.h"
 #include "Characters/BaseCharacter.h"
+#include "Sound/SoundCue.h"
 
 ABaseWeapon::ABaseWeapon()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	Body = Helper::CreateSceneComponent<USkeletalMeshComponent>(this, "Body");
+	
+	DrySound = Helper::GetAsset<USoundCue>(L"/Game/WeaponKit/FX/Cue/A_Gun_FireDry_WK_Cue");
 }
 
 void ABaseWeapon::CreateAction(EActionType Type, TSubclassOf<UBaseAction> ActionClass)
@@ -39,9 +42,31 @@ void ABaseWeapon::SetData(UWeaponDataAsset* Data)
 
 void ABaseWeapon::Fire()
 {
+	bPressed = true;
 }
 
 void ABaseWeapon::HoldFire()
+{
+	bPressed = false;
+}
+
+void ABaseWeapon::Reload()
+{
+}
+
+void ABaseWeapon::BulletFire()
+{
+}
+
+void ABaseWeapon::EjectShell()
+{
+}
+
+void ABaseWeapon::DryFire()
+{
+}
+
+void ABaseWeapon::CheckFire()
 {
 }
 

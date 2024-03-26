@@ -49,9 +49,10 @@ public:
 
 	virtual void Fire() override;
 	virtual void HoldFire() override;
+	virtual void Reload() override;
 
-	FTimerHandle FireProceduresHandle;
-
-	UFUNCTION()
-	void FireProcedures();
+	virtual void BulletFire() override;
+	virtual void EjectShell() override;
+	virtual void DryFire() override;
+	virtual void CheckFire() override;
 };
