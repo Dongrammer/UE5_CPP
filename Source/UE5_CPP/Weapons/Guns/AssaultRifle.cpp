@@ -7,6 +7,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Weapons/WeaponEnum.h"
+#include "Characters/BaseCharacter.h"
 
 AAssaultRifle::AAssaultRifle()
 {
@@ -33,8 +34,6 @@ void AAssaultRifle::SetData(UWeaponDataAsset* Data)
 	Round = Data->Round;
 	FireSound = Data->FireSound;
 	FireEffect = Data->FireEffect;
-
-	CurrentRound = MaxRound = Data->MaxAmmoInMagazine;
 }
 
 void AAssaultRifle::Fire()
@@ -130,4 +129,59 @@ void AAssaultRifle::DryFire()
 void AAssaultRifle::CheckFire()
 {
 	Super::CheckFire();
+}
+
+void AAssaultRifle::DropMagazine()
+{
+	Super::DropMagazine();
+
+	// 1. 장착되어 있는 탄창 투명화
+	Magazine->SetVisibility(false);
+
+	// 2. 같은 위치에 떨어질 탄창 스폰
+	AStaticMeshActor* DropMagazine = GetWorld()->SpawnActor<AStaticMeshActor>
+		(
+			AStaticMeshActor::StaticClass(),
+			Magazine->GetComponentLocation(),
+			Magazine->GetComponentRotation()
+		);
+
+	// 3. 탄창 물리 설정
+	DropMagazine->SetMobility(EComponentMobility::Movable);
+	DropMagazine->GetStaticMeshComponent()->SetStaticMesh(Magazine->GetStaticMesh());
+	DropMagazine->GetStaticMeshComponent()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	DropMagazine->GetStaticMeshComponent()->SetSimulatePhysics(true);
+
+	// 4. 수명 설정
+	DropMagazine->SetLifeSpan(60);
+}
+
+void AAssaultRifle::SpawnNewMagazine()
+{
+	Super::SpawnNewMagazine();
+
+	// 1. 탄창 비투명화
+	Magazine->SetVisibility(true);
+
+	// 2. 탄창 캐릭터 손에 부착
+	Magazine->AttachToComponent
+	(
+		Cast<ABaseCharacter>(GetOwner())->GetMesh(),
+		FAttachmentTransformRules::KeepRelativeTransform,
+		"Rifle_Magazine"
+	);
+}
+
+void AAssaultRifle::LoadedNewMagazine()
+{
+	// 1. 총기에 탄창 붙이기
+	Magazine->AttachToComponent
+	(
+		this->Body,
+		FAttachmentTransformRules::KeepRelativeTransform,
+		"magazine"
+	);
+
+	// 2. 탄창 충전
+	CurrentRound = MaxRound;
 }

@@ -5,6 +5,7 @@
 #include "Actions/BaseAction.h"
 #include "Characters/BaseCharacter.h"
 #include "Sound/SoundCue.h"
+#include "WeaponDataAsset.h"
 
 ABaseWeapon::ABaseWeapon()
 {
@@ -38,6 +39,7 @@ void ABaseWeapon::Tick(float DeltaTime)
 
 void ABaseWeapon::SetData(UWeaponDataAsset* Data)
 {
+	CurrentRound = MaxRound = Data->MaxAmmoInMagazine;
 }
 
 void ABaseWeapon::Fire()
@@ -67,6 +69,18 @@ void ABaseWeapon::DryFire()
 }
 
 void ABaseWeapon::CheckFire()
+{
+}
+
+void ABaseWeapon::DropMagazine()
+{
+}
+
+void ABaseWeapon::SpawnNewMagazine()
+{
+}
+
+void ABaseWeapon::LoadedNewMagazine()
 {
 }
 

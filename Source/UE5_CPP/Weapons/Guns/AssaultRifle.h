@@ -11,7 +11,7 @@ UCLASS()
 class UE5_CPP_API AAssaultRifle : public ABaseWeapon
 {
 	GENERATED_BODY()
-	
+
 private:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* Magazine;
@@ -28,8 +28,6 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	USkeletalMeshComponent* UnderBarrel;	// źâ
 
-	float RPM;
-
 	UPROPERTY()
 	UStaticMesh* Round;
 
@@ -41,6 +39,8 @@ private:
 
 	UPROPERTY()
 	UNiagaraSystem* FireEffect;
+
+	float RPM;
 
 public:
 	AAssaultRifle();
@@ -55,4 +55,8 @@ public:
 	virtual void EjectShell() override;
 	virtual void DryFire() override;
 	virtual void CheckFire() override;
+
+	virtual void DropMagazine() override;
+	virtual void SpawnNewMagazine() override;
+	virtual void LoadedNewMagazine() override;
 };

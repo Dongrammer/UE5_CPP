@@ -1,3 +1,5 @@
+#pragma once
+
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
 #include "Rifle_AnimInstance.generated.h"
@@ -16,6 +18,8 @@ class UE5_CPP_API URifle_AnimInstance : public UAnimInstance
 	UPROPERTY()
 	AAssaultRifle* Weapon;
 
+	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	bool bReload = false;
 public:
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;

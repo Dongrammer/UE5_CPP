@@ -17,6 +17,7 @@ class UE5_CPP_API ABaseWeapon : public APawn
 	
 public:
 	EWeaponState WeaponState;
+	bool bReload = false;
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -40,6 +41,7 @@ public:
 	void CreateAction(EActionType Type, TSubclassOf<UBaseAction> ActionClass);
 
 	FORCEINLINE UBaseAction* GetAction(EActionType Type) { return ActionsPtr.FindRef(Type); }
+	FORCEINLINE bool IsFullRound() { return CurrentRound == MaxRound; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -62,4 +64,11 @@ public:
 	virtual void DryFire();
 	UFUNCTION()
 	virtual void CheckFire();
+
+	UFUNCTION()
+	virtual void DropMagazine();
+	UFUNCTION()
+	virtual void SpawnNewMagazine();
+	UFUNCTION()
+	virtual void LoadedNewMagazine();
 };

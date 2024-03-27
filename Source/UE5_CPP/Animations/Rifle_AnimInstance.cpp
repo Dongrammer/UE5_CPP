@@ -17,4 +17,5 @@ void URifle_AnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (Weapon == nullptr) return;
 
 	WeaponState = Weapon->WeaponState;
+	bReload = Weapon->bReload;
 }

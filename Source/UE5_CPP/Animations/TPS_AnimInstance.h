@@ -53,10 +53,13 @@ private:
 	EWeaponType WeaponType;
 
 	UPROPERTY(BlueprintReadOnly, Category = "WeaponComponent", meta = (AllowPrivateAccess = "true"))
-	bool Swapping;
+	bool bSwapping;
 
 	UPROPERTY(BlueprintReadOnly, Category = "WeaponComponent", meta = (AllowPrivateAccess = "true"))
-	bool Aiming;
+	bool bAiming;
+
+	UPROPERTY(BlueprintReadOnly, Category = "WeaponComponent", meta = (AllowPrivateAccess = "true"))
+	bool bReload;
 
 private:
 	ABaseCharacter* Owner;

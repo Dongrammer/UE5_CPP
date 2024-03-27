@@ -142,8 +142,9 @@ void AHero::CreateCamera()
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>("Camera Arm");
 	CameraArm->SetupAttachment(RootComponent);
 
-	CameraArm->TargetArmLength = 400.0f;
+	CameraArm->TargetArmLength = 300.0f;
 	CameraArm->bUsePawnControlRotation = true;
+	CameraArm->SetRelativeLocation(FVector(0, 20, 50));
 
 	Camera = Helper::CreateSceneComponent<UCameraComponent>(this, "Camera", CameraArm);
 	Camera->bUsePawnControlRotation = false;

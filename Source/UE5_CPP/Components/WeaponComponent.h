@@ -21,6 +21,7 @@ public:
 	bool bSwapping = false;
 	bool bAiming = false;
 	EWeaponType CurrentWeaponType;
+	bool bReload = false;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "WeaponClass")
@@ -48,8 +49,6 @@ public:
 	FORCEINLINE EWeaponSlot GetCurrentWeaponSlot() { return CurrentWeaponSlot; }
 	FORCEINLINE EWeaponType GetCurrentWeaponType() { return CurrentWeaponType; }
 	FORCEINLINE ABaseWeapon* GetCurrentWeapon() { return CurrentWeapon; }
-	FORCEINLINE bool IsSwapping() { return bSwapping; }
-	FORCEINLINE bool IsAiming() { return bAiming; }
 	FORCEINLINE UWeaponDataAsset* GetAsset(const EWeaponSlot Key) { return WeaponAssets.FindRef(Key); }
 	FORCEINLINE ABaseWeapon* GetWeapon(const EWeaponSlot Key) { return Weapons.FindRef(Key); }
 		

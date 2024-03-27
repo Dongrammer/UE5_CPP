@@ -57,7 +57,8 @@ void UTPS_AnimInstance::UpdateAimOffsetVariable()
 void UTPS_AnimInstance::UpdateWeaponComponentVariable()
 {
 	if (!WeaponComponent) return;
-	Swapping = WeaponComponent->IsSwapping();
-	Aiming = WeaponComponent->IsAiming();
+	bSwapping = WeaponComponent->bSwapping;
+	bAiming = WeaponComponent->bAiming;
 	WeaponType = WeaponComponent->GetCurrentWeaponType();
+	bReload = WeaponComponent->bReload;
 }
