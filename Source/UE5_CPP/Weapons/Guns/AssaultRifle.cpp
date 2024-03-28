@@ -8,6 +8,8 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Weapons/WeaponEnum.h"
 #include "Characters/BaseCharacter.h"
+#include "Weapons/BaseProjectile.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 AAssaultRifle::AAssaultRifle()
 {
@@ -34,6 +36,11 @@ void AAssaultRifle::SetData(UWeaponDataAsset* Data)
 	Round = Data->Round;
 	FireSound = Data->FireSound;
 	FireEffect = Data->FireEffect;
+
+	BulletClass = Data->BulletClass;
+	InitSpeed = Data->InitSpeed;
+	GravityScale = Data->GravityScale;
+	bRotationFollowsVelocity = Data->bRotationFollowsVelocity;
 }
 
 void AAssaultRifle::Fire()
@@ -87,7 +94,22 @@ void AAssaultRifle::BulletFire()
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FireEffect, Location, Rotation);
 
 	// 3. 총알 발사
+	FActorSpawnParameters Parameter;
+	Parameter.Owner = GetOwner();	// 발사한 캐릭터
 
+	ABaseProjectile* Bullet = GetWorld()->SpawnActor<ABaseProjectile>
+		(
+			BulletClass,
+			Location,
+			Rotation,
+			Parameter
+		);
+
+	const FVector FwdVector = Body->GetForwardVector();
+	Bullet->GetProjectileComponent()->Velocity = (FwdVector * InitSpeed);
+	Bullet->GetProjectileComponent()->ProjectileGravityScale = GravityScale;
+	Bullet->GetProjectileComponent()->bRotationFollowsVelocity = bRotationFollowsVelocity;
+	Bullet->SetLifeSpan(10);
 }
 
 void AAssaultRifle::EjectShell()

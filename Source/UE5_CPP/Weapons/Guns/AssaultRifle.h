@@ -6,6 +6,7 @@
 
 class USoundCue;
 class UNiagaraSystem;
+class ABaseProjectile;
 
 UCLASS()
 class UE5_CPP_API AAssaultRifle : public ABaseWeapon
@@ -41,6 +42,13 @@ private:
 	UNiagaraSystem* FireEffect;
 
 	float RPM;
+
+	UPROPERTY()
+	TSubclassOf<ABaseProjectile> BulletClass;
+
+	float InitSpeed = 2000;
+	float GravityScale;
+	bool bRotationFollowsVelocity;
 
 public:
 	AAssaultRifle();

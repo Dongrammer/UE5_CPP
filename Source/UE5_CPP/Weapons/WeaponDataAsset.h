@@ -10,6 +10,7 @@ class ABaseWeapon;
 class UBaseAction;
 class UNiagaraSystem;
 class USoundCue;
+class ABaseProjectile;
 
 UCLASS()
 class UE5_CPP_API UWeaponDataAsset : public UDataAsset
@@ -62,6 +63,20 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Magazine")
 	UNiagaraSystem* FireEffect;	// πﬂªÁ ¿Ã∆Â∆Æ
+
+	/* =============================================================== */
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
+	TSubclassOf<ABaseProjectile> BulletClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
+	float InitSpeed = 10.0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
+	bool bRotationFollowsVelocity = true;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
+	float GravityScale = 1.0f;
 
 	/* =============================================================== */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Actions")

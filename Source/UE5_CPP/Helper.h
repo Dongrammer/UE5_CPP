@@ -39,6 +39,13 @@ public:
 
 		return Asset.Class;
 	}
+
+	template<typename T>
+	static T* GetAssetDynamic(FString InPath)
+	{
+		UObject* obj = StaticLoadObject(T::StaticClass(), NULL, *InPath);
+		return Cast<T>(obj);
+	}
 };
 
 #define MAPPING_CLICK(EnhancedInputComponent, InputAction, StartedAction, CompletedAction) \
